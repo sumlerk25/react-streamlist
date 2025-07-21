@@ -1,0 +1,46 @@
+/* MovieDetails.css */
+
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #f4f4f4;
+}
+
+/* Container for MovieDetails component */
+div {
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Main heading style */
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Movie info paragraphs */
+p {
+  line-height: 1.6;
+  font-size: 18px;
+  color: #444;
+  margin-bottom: 15px;
+}
+
+/* Specific styles for emphasis or labels */
+p strong {
+  color: #222;
+}
+
+/* Responsive image styling if you add poster images later */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 20px auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}

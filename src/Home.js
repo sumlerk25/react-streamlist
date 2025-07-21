@@ -49,7 +49,7 @@ function Home() {
 
   return (
     <div>
-      <h1>StreamList Homepage</h1>
+      <h1>StreamList</h1>
       {/* Input box */}
       <input
         type="text"
