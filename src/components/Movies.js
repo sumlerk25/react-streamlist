@@ -1,5 +1,6 @@
-// src/components/SearchMovies.js
+// src/components/Movies.js
 import React, { useState, useEffect } from 'react';
+import './Movies.css';
 
 function SearchMovies() {
   const [query, setQuery] = useState('');
@@ -7,6 +8,7 @@ function SearchMovies() {
   const [searchHistory, setSearchHistory] = useState([]);
   const [hasSearched, setHasSearched] = useState(false); // Track if user has searched
 
+    // Consider using environment variables for the API key (e.g., process.env.REACT_APP_TMDB_API_KEY)
   const API_KEY = '99409549f502b13451f6b88134e5e054'; // Your TMDB API key
 
   // Load search history from localStorage on mount
@@ -28,11 +30,19 @@ function SearchMovies() {
 
     // Fetch movies from TMDB API
     fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${encodeURIComponent(query)}`)
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then(data => {
         setMovies(data.results || []);
       })
-      .catch(() => alert('Error fetching data.'));
+      .catch(error => {
+        console.error("Error fetching data:", error);
+        alert(`Error fetching data: ${error.message}. Please try again later.`);
+      });
   };
 
   // Function to clear search history

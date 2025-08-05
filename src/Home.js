@@ -1,45 +1,35 @@
 import React, { useState } from 'react';
 import './styles.css';
+import list from './data';
 
-function Home() {
+function Home({ addToCart }) {
+  // Task list states
   const [inputs, setInputs] = useState([]);
   const [currentInput, setCurrentInput] = useState('');
 
-  // Handle user typing in input box
-  const handleInputChange = (e) => {
-    setCurrentInput(e.target.value);
-  };
-
-  // Add new item to the list
+  // Task list handlers
+  const handleInputChange = (e) => setCurrentInput(e.target.value);
   const handleAddInput = () => {
     if (currentInput.trim() !== '') {
       setInputs([...inputs, { text: currentInput, completed: false, isEditing: false }]);
-      setCurrentInput(''); // clear input
+      setCurrentInput('');
     }
   };
-
-  // Toggle completion status
   const handleToggleComplete = (index) => {
     const newInputs = [...inputs];
     newInputs[index].completed = !newInputs[index].completed;
     setInputs(newInputs);
   };
-
-  // Delete an item
   const handleDelete = (index) => {
     const newInputs = [...inputs];
     newInputs.splice(index, 1);
     setInputs(newInputs);
   };
-
-  // Start editing an item
   const handleEdit = (index) => {
     const newInputs = [...inputs];
     newInputs[index].isEditing = true;
     setInputs(newInputs);
   };
-
-  // Save edited text
   const handleSaveEdit = (index, newText) => {
     const newInputs = [...inputs];
     newInputs[index].text = newText;
@@ -50,29 +40,11 @@ function Home() {
   return (
     <div>
       <h1>StreamList</h1>
-      {/* Input box */}
-      <input
-        type="text"
-        placeholder="Enter your event..."
-        value={currentInput}
-        onChange={handleInputChange}
-      />
-      {/* Submit button */}
-      <button onClick={handleAddInput}>Add</button>
 
-      {/* Display list of inputs */}
+      {/* Your task list UI */}
       <ul>
         {inputs.map((item, index) => (
-          <li
-            key={index}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '4px',
-            }}
-          >
-            {/* Complete icon */}
+          <li key={index} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px' }}>
             <span
               className="material-symbols-outlined"
               style={{ cursor: 'pointer' }}
@@ -80,8 +52,6 @@ function Home() {
             >
               {item.completed ? 'check_circle' : 'radio_button_unchecked'}
             </span>
-
-            {/* Item text or input if editing */}
             {item.isEditing ? (
               <input
                 type="text"
@@ -89,24 +59,17 @@ function Home() {
                 autoFocus
                 onBlur={(e) => handleSaveEdit(index, e.target.value)}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSaveEdit(index, e.target.value);
-                  }
+                  if (e.key === 'Enter') handleSaveEdit(index, e.target.value);
                 }}
               />
             ) : (
               <span
-                style={{
-                  cursor: 'pointer',
-                  textDecoration: item.completed ? 'line-through' : 'none',
-                }}
+                style={{ cursor: 'pointer', textDecoration: item.completed ? 'line-through' : 'none' }}
                 onDoubleClick={() => handleEdit(index)}
               >
                 {item.text}
               </span>
             )}
-
-            {/* Edit icon */}
             {!item.isEditing && (
               <span
                 className="material-symbols-outlined"
@@ -116,8 +79,6 @@ function Home() {
                 edit
               </span>
             )}
-
-            {/* Delete icon */}
             <span
               className="material-symbols-outlined"
               style={{ cursor: 'pointer' }}
@@ -128,6 +89,20 @@ function Home() {
           </li>
         ))}
       </ul>
+
+      {/* Product list for adding to cart */}
+      <h2>Available Products</h2>
+      <div className="product-list">
+        {list.map((product) => (
+          <div key={product.id} style={{ border: '1px solid #ccc', padding: '8px', marginBottom: '10px' }}>
+            <img src={product.img} alt={product.service} width="100" />
+            <h3>{product.service}</h3>
+            <p>{product.serviceInfo}</p>
+            <p>Price: ${product.price.toFixed(2)}</p>
+            <button onClick={() => addToCart(product)}>Add to Cart</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
